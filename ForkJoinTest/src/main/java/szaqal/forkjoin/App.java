@@ -9,15 +9,16 @@ import java.util.concurrent.ForkJoinPool;
  * 
  */
 public class App {
-
-	public static final ForkJoinPool POOL = new ForkJoinPool();
 	
 	public static final int CORE_COUNT = Runtime.getRuntime().availableProcessors();
 
+	public static ForkJoinPool POOL = new ForkJoinPool(CORE_COUNT);
+	
+
 	public static void main(String[] args) throws IOException {
 		System.out.println("Application started with processors " + CORE_COUNT);
-		List<String> result = POOL.invoke(new GenerateItemsTask());
-		System.out.println("Done " + result);
+		List<String> result = POOL.invoke(new GenerateItemsTask(7_000_000));
+		System.out.println("Done");
 	}
 
 }

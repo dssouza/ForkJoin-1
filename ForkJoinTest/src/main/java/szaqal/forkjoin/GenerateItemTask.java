@@ -28,10 +28,12 @@ public class GenerateItemTask extends RecursiveTask<List<String>> {
 
 	@Override
 	protected List<String> compute() {
+		System.out.println(String.format("Generating %s  items", quantity));
 		List<String> result = new ArrayList<>();
 		for (int i = 0; i < quantity; i++) {
 			result.add(itemType.generateItem());
 		}
+		System.out.println("Task Done");
 		return result;
 	}
 

@@ -4,7 +4,7 @@ package szaqal.forkjoin;
  * @author malczyk.pawel@gmail.com
  * 
  */
-public class FemalePersonGenerator implements ItemGenerator {
+public class FemalePersonGenerator extends AbstractItemGenerator {
 
 	private final String firstNames;
 

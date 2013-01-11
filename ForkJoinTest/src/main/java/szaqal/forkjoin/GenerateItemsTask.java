@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.RecursiveTask;
 
-
 /**
  * @author malczyk.pawel@gmail.com
  * 
@@ -15,18 +14,26 @@ public class GenerateItemsTask extends RecursiveTask<List<String>> {
 
 	private static final long serialVersionUID = -3353190810405095690L;
 
-	List<RecursiveTask<List<String>>> forks = new LinkedList<>();
+	private final List<RecursiveTask<List<String>>> forks = new LinkedList<>();
+	
+	private final int itemQuantity;
+	
+	public GenerateItemsTask(int quantity) {
+		this.itemQuantity = quantity;
+	}
 
 	@Override
 	protected List<String> compute() {
-
+		long start = System.currentTimeMillis();
 		List<String> items = new ArrayList<>();
-
-		for (int i = 0; i < App.POOL.getPoolSize(); i++) {
-			GenerateItemTask genTask = new GenerateItemTask(10, ItemType.MALE_PERSON);
+		System.out.println(String.format("Generating %s items with pool size %s", itemQuantity, App.CORE_COUNT) );
+		for (int i = 0; i < App.CORE_COUNT; i++) {
+			GenerateItemTask genTask = new GenerateItemTask(itemQuantity / App.CORE_COUNT,
+					ItemType.MALE_PERSON);
 			forks.add(genTask);
 			genTask.fork();
 		}
+		System.out.println("Pools size " + App.POOL.getPoolSize());
 
 		for (RecursiveTask<List<String>> task : forks) {
 			try {
@@ -35,7 +42,8 @@ public class GenerateItemsTask extends RecursiveTask<List<String>> {
 				e.printStackTrace();
 			}
 		}
-
+		long end = System.currentTimeMillis();
+		System.out.println("Exec time " + (end - start));
 		return items;
 	}
 
