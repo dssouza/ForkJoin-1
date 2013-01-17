@@ -18,18 +18,21 @@ public class GenerateItemsTask extends RecursiveTask<List<String>> {
 	
 	private final int itemQuantity;
 	
-	public GenerateItemsTask(int quantity) {
+	private ItemType itemType;
+	
+	public GenerateItemsTask(int quantity, ItemType itemType) {
 		this.itemQuantity = quantity;
+		this.itemType = itemType;
 	}
 
 	@Override
 	protected List<String> compute() {
+		System.out.println("Item type : " + itemType);
 		long start = System.currentTimeMillis();
 		List<String> items = new ArrayList<>();
 		System.out.println(String.format("Generating %s items with pool size %s", itemQuantity, App.CORE_COUNT) );
 		for (int i = 0; i < App.CORE_COUNT; i++) {
-			GenerateItemTask genTask = new GenerateItemTask(itemQuantity / App.CORE_COUNT,
-					ItemType.MALE_PERSON);
+			GenerateItemTask genTask = new GenerateItemTask(itemQuantity / App.CORE_COUNT, itemType);
 			forks.add(genTask);
 			genTask.fork();
 		}

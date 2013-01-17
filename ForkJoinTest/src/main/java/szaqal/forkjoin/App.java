@@ -1,13 +1,19 @@
 package szaqal.forkjoin;
 
+import java.io.BufferedWriter;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.concurrent.ForkJoinPool;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.HelpFormatter;
-import org.apache.commons.cli.Option;
 import org.apache.commons.cli.OptionBuilder;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
@@ -23,13 +29,12 @@ public class App {
 	private static final Options OPTIONS = new Options();
 
 	static {
-		Option qty = OptionBuilder.withArgName("qty").hasArg()
-				.withDescription("items quantity").create("qty");
-		OPTIONS.addOption(qty);
+		OPTIONS.addOption(OptionBuilder.withArgName("qty").hasArg().withDescription("items quantity").create("qty"));
+		OPTIONS.addOption(OptionBuilder.withArgName("type").hasArg().withDescription("item type (MALE_PERSON,FEMALE_PERSON)").create("type"));
+		OPTIONS.addOption(OptionBuilder.withArgName("filename").hasArg().withDescription("result file name").create("filename"));
 	}
 
-	public static final int CORE_COUNT = Runtime.getRuntime()
-			.availableProcessors();
+	public static final int CORE_COUNT = Runtime.getRuntime().availableProcessors();
 
 	public static ForkJoinPool POOL = new ForkJoinPool(CORE_COUNT);
 
@@ -41,17 +46,41 @@ public class App {
 			if (qty == null) {
 				throw new ParseException("Missing required parameter");
 			}
-			System.out.println("Application started with processors "
-					+ CORE_COUNT);
-			List<String> result = POOL.invoke(new GenerateItemsTask(
-					(qty == null) ? 0 : Integer.valueOf(qty)));
+			String type = line.getOptionValue("type");
+			if (type == null) {
+				throw new ParseException("Missing required parameter");
+			}
+			
+			String fileName = line.getOptionValue("filename");
+			if (fileName == null) {
+				throw new ParseException("Missing required parameter");
+			}
+			
+			System.out.println("Application started with processors " + CORE_COUNT);
+			List<String> generatedItems = POOL.invoke(new GenerateItemsTask((qty == null) ? 0 : Integer.valueOf(qty), ItemType.valueOf(type)));
+
+			
+			storeFile(fileName, generatedItems);
 		} catch (ParseException exp) {
 			HelpFormatter formatter = new HelpFormatter();
 			formatter.printHelp("ForkJoin", OPTIONS);
 			System.out.println("Parsing failed.  Reason: " + exp.getMessage());
+		} catch (URISyntaxException e) {
+			System.out.println("Invalid filename given");
 		}
-
 		System.out.println("Done");
+	}
+
+	
+	private static void storeFile(String fileName, List<String> result) throws IOException, URISyntaxException {
+		Path filePath = Paths.get(new URI("file://"+fileName));
+		Files.deleteIfExists(filePath);
+		BufferedWriter writer = Files.newBufferedWriter(filePath, Charset.defaultCharset());
+		for(String item : result) {
+			writer.write(item);
+			writer.newLine();
+		}
+		writer.flush();
 	}
 
 }
