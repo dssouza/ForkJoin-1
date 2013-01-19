@@ -34,7 +34,7 @@ public class CompanyGenerator extends AbstractItemGenerator<String> {
 		if(companyTypeList == null) {
 			companyTypeList = loadAll(companyTypes);
 		}
-		return randomGet(companyNameList) + " " + randomGet(companyTypeList);
+		return itemFormatter.format(randomGet(companyNameList) + " " + randomGet(companyTypeList));
 	}
 
 }

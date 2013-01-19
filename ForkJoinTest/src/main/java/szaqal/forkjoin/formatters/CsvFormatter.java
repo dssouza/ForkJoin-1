@@ -16,7 +16,7 @@ public class CsvFormatter implements ItemFormatter<String> {
 
 	@Override
 	public String format(String[] items) {
-		return Joiner.on(";").join(items);
+		return Joiner.on(",").join(items);
 	}
 
 }

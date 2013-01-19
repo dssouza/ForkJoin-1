@@ -34,7 +34,7 @@ public final class MalePersonGenerator extends AbstractItemGenerator<String>  {
 			lastNameList = loadAll(lastNames);
 		}
 		
-		return randomGet(firstNameList) + " " + randomGet(lastNameList);
+		return itemFormatter.format(new String [] {randomGet(firstNameList), randomGet(lastNameList)});
 	}
 	
 }
