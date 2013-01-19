@@ -17,23 +17,23 @@ import szaqal.forkjoin.formatters.ItemFormatter;
  * 
  */
 public class GenerateItemsTask extends RecursiveTask<List<String>> {
-	
+
 	private static final Logger LOG = LoggerFactory.getLogger(GenerateItemsTask.class);
 
 	private static final long serialVersionUID = -3353190810405095690L;
 
 	private final List<RecursiveTask<List<String>>> forks = new LinkedList<>();
-	
+
 	private final int itemQuantity;
-	
+
 	private final StringItemType itemType;
-	
+
 	private final ItemFormatter.TYPES formatterType;
-	
-	public GenerateItemsTask(int quantity, StringItemType itemType, ItemFormatter.TYPES formatterType) {
-		this.itemQuantity = quantity;
-		this.itemType = itemType;
-		this.formatterType = formatterType;
+
+	public GenerateItemsTask(ExecutionContext context) {
+		this.itemQuantity = context.getQuantity();
+		this.itemType = StringItemType.valueOf(context.getType());
+		this.formatterType = context.getFormatterType();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -42,9 +42,9 @@ public class GenerateItemsTask extends RecursiveTask<List<String>> {
 		LOG.info("Item type : " + itemType);
 		long start = System.currentTimeMillis();
 		List<String> items = new ArrayList<>();
-		LOG.info(String.format("Generating %s items with pool size %s", itemQuantity, App.CORE_COUNT) );
+		LOG.info(String.format("Generating %s items with pool size %s", itemQuantity, App.CORE_COUNT));
 		ItemFormatter<String> formatter = null;
-		
+
 		try {
 			formatter = (ItemFormatter<String>) formatterType.getClazz().newInstance();
 		} catch (InstantiationException | IllegalAccessException e1) {

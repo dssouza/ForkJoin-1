@@ -23,4 +23,6 @@ public interface ItemFormatter<T> {
 	}
 	
 	T format(T item);
+	
+	T format(T[] items);
 }

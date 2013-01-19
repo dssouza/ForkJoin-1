@@ -9,7 +9,7 @@ import szaqal.forkjoin.formatters.ItemFormatter;
  * @author malczyk.pawel@gmail.com
  *
  */
-public class ExecutionContext {
+public final class ExecutionContext {
 	
 	private String type;
 	
@@ -50,6 +50,10 @@ public class ExecutionContext {
 		context.setFormatter(formatter);
 		context.setFormatterType(formatterType);
 		return context;
+	}
+	
+	public int getQuantity() {
+		return Integer.valueOf(getQty());
 	}
 
 

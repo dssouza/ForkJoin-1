@@ -54,7 +54,7 @@ public class GenerateItemTask extends RecursiveTask<List<String>> {
 		LOG.info(String.format("Generating %s  items", quantity));
 		List<String> result = new ArrayList<>();
 		for (int i = 0; i < quantity; i++) {
-			result.add(formatter.format(itemType.generateItem()));
+			result.add((itemType.generateItem(formatter)));
 		}
 		LOG.info("Task Done");
 		return result;

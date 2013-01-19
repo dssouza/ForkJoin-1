@@ -21,8 +21,6 @@ import org.apache.commons.cli.PosixParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import szaqal.forkjoin.enums.StringItemType;
-
 /**
  * @author malczyk.pawel@gmail.com
  * 
@@ -51,11 +49,9 @@ public class App {
 		try {
 			CommandLine line = parser.parse(OPTIONS, args);
 			ExecutionContext context = ExecutionContext.build(line);
-			
 
 			LOG.info("Application started with {} processors ", CORE_COUNT);
-			List<String> generatedItems = POOL.invoke(new GenerateItemsTask((context.getQty() == null) ? 0 : Integer.valueOf(context.getQty()), StringItemType
-					.valueOf(context.getType()), context.getFormatterType()));
+			List<String> generatedItems = POOL.invoke(new GenerateItemsTask(context));
 
 			storeFile(context.getFileName(), generatedItems);
 		} catch (ParseException exp) {

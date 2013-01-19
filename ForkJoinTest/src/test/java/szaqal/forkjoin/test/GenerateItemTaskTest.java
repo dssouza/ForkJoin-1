@@ -10,6 +10,8 @@ import org.junit.Test;
 
 import szaqal.forkjoin.GenerateItemTask;
 import szaqal.forkjoin.enums.StringItemType;
+import szaqal.forkjoin.formatters.ItemFormatter;
+import szaqal.forkjoin.formatters.PlainFormatter;
 import szaqal.forkjoin.generators.AbstractItemGenerator;
 
 /**
@@ -53,11 +55,11 @@ public class GenerateItemTaskTest {
 		AbstractItemGenerator<String> itemGenerator = new AbstractItemGenerator<String>() {
 			
 			@Override
-			public String generateItem() {
+			public String generateItem(ItemFormatter<String> itemFormatter) {
 				loadAll("invalidFileName");
 				return "";
 			}
 		};
-		assertNotNull(itemGenerator.generateItem());
+		assertNotNull(itemGenerator.generateItem(new PlainFormatter()));
 	}
 }

@@ -2,6 +2,8 @@ package szaqal.forkjoin.generators;
 
 import java.util.List;
 
+import szaqal.forkjoin.formatters.ItemFormatter;
+
 /**
  * @author malczyk.pawel@gmail.com
  * 
@@ -22,7 +24,7 @@ public class FemalePersonGenerator extends AbstractItemGenerator<String> {
 	}
 
 	@Override
-	public String generateItem() {
+	public String generateItem(ItemFormatter<String> itemFormatter) {
 		
 		if(firstNameList == null) {
 			firstNameList = loadAll(firstNames);

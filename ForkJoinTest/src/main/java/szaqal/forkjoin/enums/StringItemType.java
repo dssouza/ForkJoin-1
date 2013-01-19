@@ -1,5 +1,6 @@
 package szaqal.forkjoin.enums;
 
+import szaqal.forkjoin.formatters.ItemFormatter;
 import szaqal.forkjoin.generators.CompanyGenerator;
 import szaqal.forkjoin.generators.FemalePersonGenerator;
 import szaqal.forkjoin.generators.ItemGenerator;
@@ -23,7 +24,7 @@ public enum StringItemType implements ItemGenerator<String> {
 	}
 
 	@Override
-	public String generateItem() {
-		return generator.generateItem();
+	public String generateItem(ItemFormatter<String> formatter) {
+		return generator.generateItem(formatter);
 	}
 }

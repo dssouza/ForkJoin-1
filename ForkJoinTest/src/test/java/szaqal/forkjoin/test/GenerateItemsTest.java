@@ -7,8 +7,8 @@ import java.util.concurrent.ForkJoinPool;
 
 import org.junit.Test;
 
+import szaqal.forkjoin.ExecutionContext;
 import szaqal.forkjoin.GenerateItemsTask;
-import szaqal.forkjoin.enums.StringItemType;
 import szaqal.forkjoin.formatters.ItemFormatter;
 
 /**
@@ -19,7 +19,12 @@ public class GenerateItemsTest {
 
 	@Test
 	public void testGenerate() {
-		List<String> generated =  new ForkJoinPool().invoke(new GenerateItemsTask(10, StringItemType.COMPANY,  ItemFormatter.TYPES.PLAIN));
+		
+		ExecutionContext context = new ExecutionContext();
+		context.setQty("10");
+		context.setType("COMPANY");
+		context.setFormatterType(ItemFormatter.TYPES.PLAIN);
+		List<String> generated =  new ForkJoinPool().invoke(new GenerateItemsTask(context));
 		assertEquals(10, generated.size());
 	}
 }
