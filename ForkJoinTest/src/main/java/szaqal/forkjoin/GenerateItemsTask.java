@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.RecursiveTask;
 
+import szaqal.forkjoin.enums.StringItemType;
+
 /**
  * @author malczyk.pawel@gmail.com
  * 
@@ -18,9 +20,9 @@ public class GenerateItemsTask extends RecursiveTask<List<String>> {
 	
 	private final int itemQuantity;
 	
-	private ItemType itemType;
+	private StringItemType itemType;
 	
-	public GenerateItemsTask(int quantity, ItemType itemType) {
+	public GenerateItemsTask(int quantity, StringItemType itemType) {
 		this.itemQuantity = quantity;
 		this.itemType = itemType;
 	}

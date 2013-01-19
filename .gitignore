@@ -3,3 +3,7 @@
 **/*.class
 ForkJoinTest/target/**
 ForkJoinTest/bin/**
+ForkJoinTest/.externalToolBuilders/
+ForkJoinTest/.settings/**
+ForkJoinTest/maven-eclipse.xml
+

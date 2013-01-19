@@ -1,4 +1,4 @@
-package szaqal.forkjoin;
+package szaqal.forkjoin.itemgenerators;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -8,13 +8,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+
 import com.google.common.base.Preconditions;
 
 /**
  * @author malczyk.pawel@gmail.com
  *
  */
-public abstract class AbstractItemGenerator implements ItemGenerator {
+public abstract class AbstractItemGenerator<T> implements ItemGenerator<T> {
 	
 	protected static final Random RANDOM = new Random(System.currentTimeMillis()); 
 	
@@ -35,7 +36,7 @@ public abstract class AbstractItemGenerator implements ItemGenerator {
 		return result;
 	}
 	
-	protected final <T> T randomGet(List<T> items) {
+	protected final T randomGet(List<T> items) {
 		return items.get(RANDOM.nextInt(items.size()));
 	}
 	

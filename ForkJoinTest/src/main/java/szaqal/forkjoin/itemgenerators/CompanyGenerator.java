@@ -1,4 +1,4 @@
-package szaqal.forkjoin;
+package szaqal.forkjoin.itemgenerators;
 
 import java.util.List;
 
@@ -6,7 +6,7 @@ import java.util.List;
  * @author malczyk.pawel@gmail.com
  *
  */
-public class CompanyGenerator extends AbstractItemGenerator {
+public class CompanyGenerator extends AbstractItemGenerator<String> {
 	
 	private final String companyNames;
 	

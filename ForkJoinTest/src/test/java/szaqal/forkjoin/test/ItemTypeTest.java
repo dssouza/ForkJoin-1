@@ -4,7 +4,7 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import szaqal.forkjoin.ItemType;
+import szaqal.forkjoin.enums.StringItemType;
 
 /**
  * @author malczyk.pawel@gmail.com
@@ -14,11 +14,11 @@ public class ItemTypeTest {
 
 	@Test
 	public void testCount() {
-		assertEquals(3, ItemType.values().length);
+		assertEquals(3, StringItemType.values().length);
 	}
 	
 	@Test
 	public void testValueOf() {
-		assertEquals(ItemType.COMPANY, ItemType.valueOf("COMPANY"));
+		assertEquals(StringItemType.COMPANY, StringItemType.valueOf("COMPANY"));
 	}
 }

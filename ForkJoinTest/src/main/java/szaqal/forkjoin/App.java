@@ -19,6 +19,8 @@ import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.PosixParser;
 
+import szaqal.forkjoin.enums.StringItemType;
+
 /**
  * @author malczyk.pawel@gmail.com
  * 
@@ -57,7 +59,7 @@ public class App {
 			}
 			
 			System.out.println("Application started with processors " + CORE_COUNT);
-			List<String> generatedItems = POOL.invoke(new GenerateItemsTask((qty == null) ? 0 : Integer.valueOf(qty), ItemType.valueOf(type)));
+			List<String> generatedItems = POOL.invoke(new GenerateItemsTask((qty == null) ? 0 : Integer.valueOf(qty), StringItemType.valueOf(type)));
 
 			
 			storeFile(fileName, generatedItems);

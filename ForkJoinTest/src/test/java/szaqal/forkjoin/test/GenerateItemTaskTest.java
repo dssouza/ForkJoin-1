@@ -8,9 +8,9 @@ import java.util.concurrent.ForkJoinPool;
 
 import org.junit.Test;
 
-import szaqal.forkjoin.AbstractItemGenerator;
 import szaqal.forkjoin.GenerateItemTask;
-import szaqal.forkjoin.ItemType;
+import szaqal.forkjoin.enums.StringItemType;
+import szaqal.forkjoin.itemgenerators.AbstractItemGenerator;
 
 /**
  * @author malczyk.pawel@gmail.com
@@ -20,7 +20,7 @@ public class GenerateItemTaskTest {
 
 	@Test
 	public void testGenerateItemMale() throws Exception {
-		GenerateItemTask itemTask = new GenerateItemTask(10, ItemType.MALE_PERSON);
+		GenerateItemTask itemTask = new GenerateItemTask(10, StringItemType.MALE_PERSON);
 		new ForkJoinPool().execute(itemTask);
 		List<String> result = itemTask.get();
 		assertNotNull(result);
@@ -29,7 +29,7 @@ public class GenerateItemTaskTest {
 	
 	@Test
 	public void testGenerateItemFemale() throws Exception {
-		GenerateItemTask itemTask = new GenerateItemTask(5, ItemType.FEMALE_PERSON);
+		GenerateItemTask itemTask = new GenerateItemTask(5, StringItemType.FEMALE_PERSON);
 		new ForkJoinPool().execute(itemTask);
 		List<String> result = itemTask.get();
 		assertNotNull(result);
@@ -38,7 +38,7 @@ public class GenerateItemTaskTest {
 	
 	@Test
 	public void testGenerateItemCompany() throws Exception {
-		GenerateItemTask itemTask = new GenerateItemTask(2, ItemType.COMPANY);
+		GenerateItemTask itemTask = new GenerateItemTask(2, StringItemType.COMPANY);
 		new ForkJoinPool().execute(itemTask);
 		List<String> result = itemTask.get();
 		assertNotNull(result);
@@ -47,7 +47,7 @@ public class GenerateItemTaskTest {
 	
 	@Test(expected=NullPointerException.class)
 	public void testException() {
-		AbstractItemGenerator itemGenerator = new AbstractItemGenerator() {
+		AbstractItemGenerator<String> itemGenerator = new AbstractItemGenerator<String>() {
 			
 			@Override
 			public String generateItem() {
