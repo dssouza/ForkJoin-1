@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.RecursiveTask;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import szaqal.forkjoin.enums.StringItemType;
 import szaqal.forkjoin.formatters.ItemFormatter;
 
@@ -13,6 +16,8 @@ import szaqal.forkjoin.formatters.ItemFormatter;
  */
 public class GenerateItemTask extends RecursiveTask<List<String>> {
 
+	private static final Logger LOG = LoggerFactory.getLogger(GenerateItemTask.class);
+	
 	private static final long serialVersionUID = 8933537008111986053L;
 
 	private int quantity;
@@ -46,12 +51,12 @@ public class GenerateItemTask extends RecursiveTask<List<String>> {
 
 	@Override
 	protected List<String> compute() {
-		System.out.println(String.format("Generating %s  items", quantity));
+		LOG.info(String.format("Generating %s  items", quantity));
 		List<String> result = new ArrayList<>();
 		for (int i = 0; i < quantity; i++) {
 			result.add(formatter.format(itemType.generateItem()));
 		}
-		System.out.println("Task Done");
+		LOG.info("Task Done");
 		return result;
 	}
 

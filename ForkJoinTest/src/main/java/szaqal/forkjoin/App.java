@@ -18,6 +18,8 @@ import org.apache.commons.cli.OptionBuilder;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.PosixParser;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import szaqal.forkjoin.enums.StringItemType;
 import szaqal.forkjoin.formatters.ItemFormatter;
@@ -28,7 +30,9 @@ import szaqal.forkjoin.formatters.ItemFormatter;
  */
 @SuppressWarnings("static-access")
 public class App {
-
+	
+	private static final Logger LOG = LoggerFactory.getLogger(App.class);
+	
 	private static final Options OPTIONS = new Options();
 
 	static {
@@ -67,7 +71,7 @@ public class App {
 				formatterType = ItemFormatter.TYPES.valueOf(formatter);
 			}
 
-			System.out.println("Application started with processors " + CORE_COUNT);
+			LOG.info("Application started with {} processors ", CORE_COUNT);
 			List<String> generatedItems = POOL.invoke(new GenerateItemsTask((qty == null) ? 0 : Integer.valueOf(qty), StringItemType
 					.valueOf(type), formatterType));
 
@@ -75,11 +79,11 @@ public class App {
 		} catch (ParseException exp) {
 			HelpFormatter formatter = new HelpFormatter();
 			formatter.printHelp("ForkJoin", OPTIONS);
-			System.out.println("Parsing failed.  Reason: " + exp.getMessage());
+			LOG.warn("Parsing failed.  Reason: " + exp.getMessage());
 		} catch (URISyntaxException e) {
-			System.out.println("Invalid filename given");
+			LOG.error("Invalid filename given");
 		}
-		System.out.println("Done");
+		LOG.info("Done");
 	}
 
 	private static void storeFile(String fileName, List<String> result) throws IOException, URISyntaxException {

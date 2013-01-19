@@ -6,6 +6,9 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.RecursiveTask;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import szaqal.forkjoin.enums.StringItemType;
 import szaqal.forkjoin.formatters.ItemFormatter;
 
@@ -14,6 +17,8 @@ import szaqal.forkjoin.formatters.ItemFormatter;
  * 
  */
 public class GenerateItemsTask extends RecursiveTask<List<String>> {
+	
+	private static final Logger LOG = LoggerFactory.getLogger(GenerateItemsTask.class);
 
 	private static final long serialVersionUID = -3353190810405095690L;
 
@@ -34,10 +39,10 @@ public class GenerateItemsTask extends RecursiveTask<List<String>> {
 	@SuppressWarnings("unchecked")
 	@Override
 	protected List<String> compute() {
-		System.out.println("Item type : " + itemType);
+		LOG.info("Item type : " + itemType);
 		long start = System.currentTimeMillis();
 		List<String> items = new ArrayList<>();
-		System.out.println(String.format("Generating %s items with pool size %s", itemQuantity, App.CORE_COUNT) );
+		LOG.info(String.format("Generating %s items with pool size %s", itemQuantity, App.CORE_COUNT) );
 		ItemFormatter<String> formatter = null;
 		
 		try {
@@ -50,7 +55,7 @@ public class GenerateItemsTask extends RecursiveTask<List<String>> {
 			forks.add(genTask);
 			genTask.fork();
 		}
-		System.out.println("Pools size " + App.POOL.getPoolSize());
+		LOG.info("Pools size " + App.POOL.getPoolSize());
 
 		for (RecursiveTask<List<String>> task : forks) {
 			try {
@@ -60,7 +65,7 @@ public class GenerateItemsTask extends RecursiveTask<List<String>> {
 			}
 		}
 		long end = System.currentTimeMillis();
-		System.out.println("Exec time " + (end - start));
+		LOG.info("Exec time " + (end - start));
 		return items;
 	}
 
