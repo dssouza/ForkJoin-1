@@ -7,6 +7,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.RecursiveTask;
 
 import szaqal.forkjoin.enums.StringItemType;
+import szaqal.forkjoin.formatters.ItemFormatter;
 
 /**
  * @author malczyk.pawel@gmail.com
@@ -20,21 +21,32 @@ public class GenerateItemsTask extends RecursiveTask<List<String>> {
 	
 	private final int itemQuantity;
 	
-	private StringItemType itemType;
+	private final StringItemType itemType;
 	
-	public GenerateItemsTask(int quantity, StringItemType itemType) {
+	private final ItemFormatter.TYPES formatterType;
+	
+	public GenerateItemsTask(int quantity, StringItemType itemType, ItemFormatter.TYPES formatterType) {
 		this.itemQuantity = quantity;
 		this.itemType = itemType;
+		this.formatterType = formatterType;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	protected List<String> compute() {
 		System.out.println("Item type : " + itemType);
 		long start = System.currentTimeMillis();
 		List<String> items = new ArrayList<>();
 		System.out.println(String.format("Generating %s items with pool size %s", itemQuantity, App.CORE_COUNT) );
+		ItemFormatter<String> formatter = null;
+		
+		try {
+			formatter = (ItemFormatter<String>) formatterType.getClazz().newInstance();
+		} catch (InstantiationException | IllegalAccessException e1) {
+			e1.printStackTrace();
+		}
 		for (int i = 0; i < App.CORE_COUNT; i++) {
-			GenerateItemTask genTask = new GenerateItemTask(itemQuantity / App.CORE_COUNT, itemType);
+			GenerateItemTask genTask = new GenerateItemTask(itemQuantity / App.CORE_COUNT, itemType, formatter);
 			forks.add(genTask);
 			genTask.fork();
 		}

@@ -10,7 +10,7 @@ import org.junit.Test;
 
 import szaqal.forkjoin.GenerateItemTask;
 import szaqal.forkjoin.enums.StringItemType;
-import szaqal.forkjoin.itemgenerators.AbstractItemGenerator;
+import szaqal.forkjoin.generators.AbstractItemGenerator;
 
 /**
  * @author malczyk.pawel@gmail.com
@@ -20,6 +20,9 @@ public class GenerateItemTaskTest {
 
 	@Test
 	public void testGenerateItemMale() throws Exception {
+		
+		
+		
 		GenerateItemTask itemTask = new GenerateItemTask(10, StringItemType.MALE_PERSON);
 		new ForkJoinPool().execute(itemTask);
 		List<String> result = itemTask.get();

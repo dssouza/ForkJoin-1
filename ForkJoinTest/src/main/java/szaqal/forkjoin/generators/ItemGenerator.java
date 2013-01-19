@@ -1,4 +1,4 @@
-package szaqal.forkjoin.itemgenerators;
+package szaqal.forkjoin.generators;
 
 /**
  * @author malczyk.pawel@gmail.com

@@ -20,6 +20,7 @@ import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.PosixParser;
 
 import szaqal.forkjoin.enums.StringItemType;
+import szaqal.forkjoin.formatters.ItemFormatter;
 
 /**
  * @author malczyk.pawel@gmail.com
@@ -32,8 +33,10 @@ public class App {
 
 	static {
 		OPTIONS.addOption(OptionBuilder.withArgName("qty").hasArg().withDescription("items quantity").create("qty"));
-		OPTIONS.addOption(OptionBuilder.withArgName("type").hasArg().withDescription("item type (MALE_PERSON,FEMALE_PERSON|COMPANY)").create("type"));
+		OPTIONS.addOption(OptionBuilder.withArgName("type").hasArg().withDescription("item type (MALE_PERSON,FEMALE_PERSON|COMPANY)")
+				.create("type"));
 		OPTIONS.addOption(OptionBuilder.withArgName("filename").hasArg().withDescription("result file name").create("filename"));
+		OPTIONS.addOption(OptionBuilder.withArgName("format").hasArg().withDescription("result format").create("format"));
 	}
 
 	public static final int CORE_COUNT = Runtime.getRuntime().availableProcessors();
@@ -52,16 +55,22 @@ public class App {
 			if (type == null) {
 				throw new ParseException("Missing required parameter");
 			}
-			
+
 			String fileName = line.getOptionValue("filename");
 			if (fileName == null) {
 				throw new ParseException("Missing required parameter");
 			}
-			
-			System.out.println("Application started with processors " + CORE_COUNT);
-			List<String> generatedItems = POOL.invoke(new GenerateItemsTask((qty == null) ? 0 : Integer.valueOf(qty), StringItemType.valueOf(type)));
 
-			
+			String formatter = line.getOptionValue("format");
+			ItemFormatter.TYPES formatterType = ItemFormatter.TYPES.PLAIN;
+			if (formatter != null) {
+				formatterType = ItemFormatter.TYPES.valueOf(formatter);
+			}
+
+			System.out.println("Application started with processors " + CORE_COUNT);
+			List<String> generatedItems = POOL.invoke(new GenerateItemsTask((qty == null) ? 0 : Integer.valueOf(qty), StringItemType
+					.valueOf(type), formatterType));
+
 			storeFile(fileName, generatedItems);
 		} catch (ParseException exp) {
 			HelpFormatter formatter = new HelpFormatter();
@@ -73,12 +82,11 @@ public class App {
 		System.out.println("Done");
 	}
 
-	
 	private static void storeFile(String fileName, List<String> result) throws IOException, URISyntaxException {
-		Path filePath = Paths.get(new URI("file://"+fileName));
+		Path filePath = Paths.get(new URI("file://" + fileName));
 		Files.deleteIfExists(filePath);
 		BufferedWriter writer = Files.newBufferedWriter(filePath, Charset.defaultCharset());
-		for(String item : result) {
+		for (String item : result) {
 			writer.write(item);
 			writer.newLine();
 		}

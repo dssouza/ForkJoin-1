@@ -1,4 +1,4 @@
-package szaqal.forkjoin.itemgenerators;
+package szaqal.forkjoin.generators;
 
 import java.util.List;
 

@@ -1,9 +1,9 @@
 package szaqal.forkjoin.enums;
 
-import szaqal.forkjoin.itemgenerators.CompanyGenerator;
-import szaqal.forkjoin.itemgenerators.FemalePersonGenerator;
-import szaqal.forkjoin.itemgenerators.ItemGenerator;
-import szaqal.forkjoin.itemgenerators.MalePersonGenerator;
+import szaqal.forkjoin.generators.CompanyGenerator;
+import szaqal.forkjoin.generators.FemalePersonGenerator;
+import szaqal.forkjoin.generators.ItemGenerator;
+import szaqal.forkjoin.generators.MalePersonGenerator;
 
 
 /**

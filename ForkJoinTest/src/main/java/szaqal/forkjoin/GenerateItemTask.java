@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.concurrent.RecursiveTask;
 
 import szaqal.forkjoin.enums.StringItemType;
+import szaqal.forkjoin.formatters.ItemFormatter;
 
 /**
  * @author malczyk.pawel@gmail.com
@@ -17,15 +18,30 @@ public class GenerateItemTask extends RecursiveTask<List<String>> {
 	private int quantity;
 
 	private StringItemType itemType;
-
+	
+	private ItemFormatter<String> formatter;
+	
 	private GenerateItemTask() {
 		super();
 	}
 
+	public GenerateItemTask(int quantity, StringItemType itemType, ItemFormatter<String> formatter) {
+		this();
+		this.quantity = quantity;
+		this.itemType = itemType;
+		this.formatter = formatter;
+	}
+	
+	@SuppressWarnings("unchecked")
 	public GenerateItemTask(int quantity, StringItemType itemType) {
 		this();
 		this.quantity = quantity;
 		this.itemType = itemType;
+		try {
+			this.formatter = (ItemFormatter<String>) ItemFormatter.TYPES.PLAIN.getClazz().newInstance();
+		} catch (InstantiationException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -33,7 +49,7 @@ public class GenerateItemTask extends RecursiveTask<List<String>> {
 		System.out.println(String.format("Generating %s  items", quantity));
 		List<String> result = new ArrayList<>();
 		for (int i = 0; i < quantity; i++) {
-			result.add((String)itemType.generateItem());
+			result.add(formatter.format(itemType.generateItem()));
 		}
 		System.out.println("Task Done");
 		return result;
