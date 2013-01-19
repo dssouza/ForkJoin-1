@@ -31,10 +31,7 @@ public final class MalePersonGenerator extends AbstractItemGenerator  {
 			lastNameList = loadAll(lastNames);
 		}
 		
-		int fNameidx = RANDOM.nextInt(firstNameList.size());
-		int lNameIdx = RANDOM.nextInt(lastNameList.size());
-		
-		return firstNameList.get(fNameidx) + " " + lastNameList.get(lNameIdx);
+		return randomGet(firstNameList) + " " + randomGet(lastNameList);
 	}
 	
 }

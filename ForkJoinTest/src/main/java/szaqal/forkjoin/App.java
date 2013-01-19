@@ -30,7 +30,7 @@ public class App {
 
 	static {
 		OPTIONS.addOption(OptionBuilder.withArgName("qty").hasArg().withDescription("items quantity").create("qty"));
-		OPTIONS.addOption(OptionBuilder.withArgName("type").hasArg().withDescription("item type (MALE_PERSON,FEMALE_PERSON)").create("type"));
+		OPTIONS.addOption(OptionBuilder.withArgName("type").hasArg().withDescription("item type (MALE_PERSON,FEMALE_PERSON|COMPANY)").create("type"));
 		OPTIONS.addOption(OptionBuilder.withArgName("filename").hasArg().withDescription("result file name").create("filename"));
 	}
 

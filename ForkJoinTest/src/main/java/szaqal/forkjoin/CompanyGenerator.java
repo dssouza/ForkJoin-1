@@ -32,11 +32,7 @@ public class CompanyGenerator extends AbstractItemGenerator {
 		if(companyTypeList == null) {
 			companyTypeList = loadAll(companyTypes);
 		}
-		
-		int companyNameIdx = RANDOM.nextInt(companyNameList.size());
-		int companyTypeIdx = RANDOM.nextInt(companyTypeList.size());
-		
-		return companyNameList.get(companyNameIdx) + " " + companyTypeList.get(companyTypeIdx);
+		return randomGet(companyNameList) + " " + randomGet(companyTypeList);
 	}
 
 }
