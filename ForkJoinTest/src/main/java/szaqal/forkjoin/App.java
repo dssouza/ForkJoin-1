@@ -22,7 +22,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import szaqal.forkjoin.enums.StringItemType;
-import szaqal.forkjoin.formatters.ItemFormatter;
 
 /**
  * @author malczyk.pawel@gmail.com
@@ -33,7 +32,7 @@ public class App {
 	
 	private static final Logger LOG = LoggerFactory.getLogger(App.class);
 	
-	private static final Options OPTIONS = new Options();
+	public static final Options OPTIONS = new Options();
 
 	static {
 		OPTIONS.addOption(OptionBuilder.withArgName("qty").hasArg().withDescription("items quantity").create("qty"));
@@ -51,31 +50,14 @@ public class App {
 		CommandLineParser parser = new PosixParser();
 		try {
 			CommandLine line = parser.parse(OPTIONS, args);
-			String qty = line.getOptionValue("qty");
-			if (qty == null) {
-				throw new ParseException("Missing required parameter");
-			}
-			String type = line.getOptionValue("type");
-			if (type == null) {
-				throw new ParseException("Missing required parameter");
-			}
-
-			String fileName = line.getOptionValue("filename");
-			if (fileName == null) {
-				throw new ParseException("Missing required parameter");
-			}
-
-			String formatter = line.getOptionValue("format");
-			ItemFormatter.TYPES formatterType = ItemFormatter.TYPES.PLAIN;
-			if (formatter != null) {
-				formatterType = ItemFormatter.TYPES.valueOf(formatter);
-			}
+			ExecutionContext context = ExecutionContext.build(line);
+			
 
 			LOG.info("Application started with {} processors ", CORE_COUNT);
-			List<String> generatedItems = POOL.invoke(new GenerateItemsTask((qty == null) ? 0 : Integer.valueOf(qty), StringItemType
-					.valueOf(type), formatterType));
+			List<String> generatedItems = POOL.invoke(new GenerateItemsTask((context.getQty() == null) ? 0 : Integer.valueOf(context.getQty()), StringItemType
+					.valueOf(context.getType()), context.getFormatterType()));
 
-			storeFile(fileName, generatedItems);
+			storeFile(context.getFileName(), generatedItems);
 		} catch (ParseException exp) {
 			HelpFormatter formatter = new HelpFormatter();
 			formatter.printHelp("ForkJoin", OPTIONS);

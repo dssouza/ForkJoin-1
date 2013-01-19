@@ -46,8 +46,6 @@
 			<version>1.7.2</version>
 		</dependency>
 
-
-
 	</dependencies>
 
 	<build>
@@ -135,9 +133,6 @@
 				</configuration>
 			</plugin>
 		</plugins>
-
-
-
 	</build>
 
 </project>
