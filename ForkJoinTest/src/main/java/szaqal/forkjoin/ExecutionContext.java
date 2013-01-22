@@ -1,6 +1,8 @@
 package szaqal.forkjoin;
 
 import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.Option;
+import org.apache.commons.cli.OptionBuilder;
 import org.apache.commons.cli.ParseException;
 
 import szaqal.forkjoin.formatters.ItemFormatter;
@@ -105,4 +107,26 @@ public final class ExecutionContext {
 	public void setFormatterType(ItemFormatter.TYPES formatterType) {
 		this.formatterType = formatterType;
 	}
+	
+	@SuppressWarnings("static-access")
+	public static Option buildQtyOption() {
+		return OptionBuilder.withArgName("qty").hasArg().withDescription("items quantity").create("qty");
+	}
+	
+	@SuppressWarnings("static-access")
+	public static Option buildTypeOption() {
+		return OptionBuilder.withArgName("type").hasArg().withDescription("item type (MALE_PERSON,FEMALE_PERSON|COMPANY)")
+				.create("type");
+	}
+	
+	@SuppressWarnings("static-access")
+	public static Option buildFileNameOption() {
+		return OptionBuilder.withArgName("filename").hasArg().withDescription("result file name").create("filename");
+	}
+	
+	@SuppressWarnings("static-access")
+	public static Option buildFormatOption() {
+		return OptionBuilder.withArgName("format").hasArg().withDescription("result format").create("format");
+	}
+	
 }

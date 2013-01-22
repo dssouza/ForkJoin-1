@@ -48,7 +48,7 @@ public class GenerateItemsTask extends RecursiveTask<List<String>> {
 		try {
 			formatter = (ItemFormatter<String>) formatterType.getClazz().newInstance();
 		} catch (InstantiationException | IllegalAccessException e1) {
-			e1.printStackTrace();
+			LOG.error("Error occured", e1);
 		}
 		for (int i = 0; i < App.CORE_COUNT; i++) {
 			GenerateItemTask genTask = new GenerateItemTask(itemQuantity / App.CORE_COUNT, itemType, formatter);
@@ -61,7 +61,7 @@ public class GenerateItemsTask extends RecursiveTask<List<String>> {
 			try {
 				items.addAll(task.get());
 			} catch (InterruptedException | ExecutionException e) {
-				e.printStackTrace();
+				LOG.error("Error occured", e);
 			}
 		}
 		long end = System.currentTimeMillis();

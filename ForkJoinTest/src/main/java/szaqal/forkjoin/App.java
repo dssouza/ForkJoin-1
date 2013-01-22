@@ -14,7 +14,6 @@ import java.util.concurrent.ForkJoinPool;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.HelpFormatter;
-import org.apache.commons.cli.OptionBuilder;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.PosixParser;
@@ -25,19 +24,17 @@ import org.slf4j.LoggerFactory;
  * @author malczyk.pawel@gmail.com
  * 
  */
-@SuppressWarnings("static-access")
 public class App {
-	
+
 	private static final Logger LOG = LoggerFactory.getLogger(App.class);
-	
+
 	public static final Options OPTIONS = new Options();
 
 	static {
-		OPTIONS.addOption(OptionBuilder.withArgName("qty").hasArg().withDescription("items quantity").create("qty"));
-		OPTIONS.addOption(OptionBuilder.withArgName("type").hasArg().withDescription("item type (MALE_PERSON,FEMALE_PERSON|COMPANY)")
-				.create("type"));
-		OPTIONS.addOption(OptionBuilder.withArgName("filename").hasArg().withDescription("result file name").create("filename"));
-		OPTIONS.addOption(OptionBuilder.withArgName("format").hasArg().withDescription("result format").create("format"));
+		OPTIONS.addOption(ExecutionContext.buildQtyOption());
+		OPTIONS.addOption(ExecutionContext.buildTypeOption());
+		OPTIONS.addOption(ExecutionContext.buildFileNameOption());
+		OPTIONS.addOption(ExecutionContext.buildFormatOption());
 	}
 
 	public static final int CORE_COUNT = Runtime.getRuntime().availableProcessors();
