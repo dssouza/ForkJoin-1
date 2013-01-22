@@ -14,7 +14,7 @@ public class ItemTypeTest {
 
 	@Test
 	public void testCount() {
-		assertEquals(3, StringItemType.values().length);
+		assertEquals(5, StringItemType.values().length);
 	}
 	
 	@Test
